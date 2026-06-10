@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>레시피와 에스프레소 기록</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="site-header">
+        <p class="eyebrow">로컬 JSON 데이터</p>
+        <h1>레시피와 에스프레소 기록</h1>
+        <p class="subtitle">요리 레시피와 에스프레소 추출 기록을 분리해서 볼 수 있는 단순한 페이지입니다.</p>
+      </header>
+
+      <nav class="section-nav" aria-label="섹션 선택">
+        <button type="button" class="section-tab is-active" data-section="recipes" aria-pressed="true">레시피</button>
+        <button type="button" class="section-tab" data-section="espresso" aria-pressed="false">에스프레소</button>
+      </nav>
+
+      <div id="status" class="status" aria-live="polite" hidden></div>
+
+      <main>
+        <section id="recipes-section" class="panel" aria-labelledby="recipes-title">
+          <div class="panel-header">
+            <div>
+              <h2 id="recipes-title">레시피</h2>
+              <p id="recipes-summary" class="section-summary">불러오는 중</p>
+            </div>
+            <label class="search">
+              <span>검색</span>
+              <input id="recipes-search" type="search" placeholder="재료, 태그, 이름 검색" autocomplete="off" />
+            </label>
+          </div>
+          <div id="recipes-empty" class="empty-state" hidden></div>
+          <div id="recipes-list" class="card-grid" aria-live="polite"></div>
+          <div id="recipes-detail" class="detail-view" aria-live="polite" hidden></div>
+        </section>
+
+        <section id="espresso-section" class="panel" aria-labelledby="espresso-title" hidden>
+          <div class="panel-header">
+            <div>
+              <h2 id="espresso-title">에스프레소</h2>
+              <p id="espresso-summary" class="section-summary">불러오는 중</p>
+            </div>
+            <label class="search">
+              <span>검색</span>
+              <input id="espresso-search" type="search" placeholder="원두명, 기록, 메모 검색" autocomplete="off" />
+            </label>
+          </div>
+          <div id="espresso-empty" class="empty-state" hidden></div>
+          <div id="espresso-list" class="stack" aria-live="polite"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js?v=20260611-espresso-data-split"></script>
+  </body>
+</html>
