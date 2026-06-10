@@ -67,6 +67,9 @@
 
 - 데이터는 일반 레시피와 분리한다.
 - 파일은 `data/espresso-recipes.json`을 사용한다.
-- 각 항목은 원두 이름을 타이틀로 갖는다.
-- 당장은 `recipe` 칸만 핵심으로 둔다.
-- `recipe` 안의 기록은 단순 문자열보다 회차, 조건, 결과, 판단, 다음 액션을 나눠 담는 객체를 우선한다.
+- 데이터 파일은 `schemaVersion`과 `beans` 배열을 갖는 정규화 구조를 사용한다.
+- 각 원두는 `id`, `name`, `goals`, `defaultEquipment`, `logs`를 갖는다.
+- 각 로그는 `rounds`, `currentAnalysis`, `adjustmentGuide`, `nextTest`, `nextDirection`을 갖는다.
+- 각 라운드는 `id`, `roundNumber`, `date`, `recipe`, `result`, `analysis`, `nextActions`를 갖는다.
+- 도징, 추출량, 온도, 시간, 압력처럼 단위가 있는 값은 `{ "value": 20, "unit": "g" }` 또는 `{ "min": 28, "max": 34, "unit": "sec" }` 형태로 기록한다.
+- 타입 기준은 `src/espresso-types.js`의 JSDoc typedef를 따른다.

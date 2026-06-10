@@ -26,7 +26,7 @@
       ]);
 
       state.recipes = Array.isArray(recipes) ? recipes : [];
-      state.espresso = Array.isArray(espresso) ? espresso : [];
+      state.espresso = normalizeEspressoData(espresso);
 
       clearStatus();
       renderAll();
@@ -86,6 +86,47 @@
       throw new Error(`데이터를 불러오지 못했습니다: ${path} (${response.status})`);
     }
     return response.json();
+  }
+
+  function normalizeEspressoData(data) {
+    if (data?.schemaVersion === 1 && Array.isArray(data.beans)) {
+      return data.beans;
+    }
+
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
+    return data.map((bean, beanIndex) => ({
+      id: `legacy-bean-${beanIndex + 1}`,
+      name: safeString(bean?.title || '원두 기록'),
+      goals: asArray(bean?.recipe?.[0]?.goals),
+      defaultEquipment: bean?.recipe?.[0]?.equipment || {},
+      logs: asArray(bean?.recipe).map((log, logIndex) => ({
+        id: `legacy-log-${beanIndex + 1}-${logIndex + 1}`,
+        type: safeString(log?.type || 'espresso-log'),
+        title: safeString(log?.name || log?.type || '추출 기록'),
+        rounds: asArray(log?.rounds).map((round, roundIndex) => ({
+          ...round,
+          id: `legacy-round-${beanIndex + 1}-${logIndex + 1}-${roundIndex + 1}`,
+          roundNumber: Number(round?.round || roundIndex + 1),
+          analysis: {
+            changes: asArray(round?.changes),
+            notes: asArray(round?.notes),
+            judgments: asArray(round?.judgment),
+            inferences: asArray(round?.inference),
+            conclusions: asArray(round?.conclusion),
+            plannedComparisons: asArray(round?.plannedComparison)
+          },
+          nextActions: asArray(round?.nextAction)
+        })),
+        currentAnalysis: log?.currentAnalysis,
+        adjustmentGuide: log?.adjustmentGuide,
+        finalHypothesis: log?.finalHypothesis,
+        nextTest: log?.nextTest,
+        nextDirection: log?.nextDirection
+      }))
+    }));
   }
 
   function renderAll() {
@@ -235,7 +276,7 @@
   function createBeanCard(bean) {
     const article = createElement('article', 'bean-card espresso-bean-card');
 
-    const logs = asArray(bean?.recipe);
+    const logs = asArray(bean?.logs);
     article.appendChild(createBeanHeader(bean, logs));
 
     if (logs.length === 0) {
@@ -244,7 +285,7 @@
     }
 
     for (const log of logs) {
-      article.appendChild(createLogCard(log));
+      article.appendChild(createLogCard(log, bean));
     }
 
     return article;
@@ -259,11 +300,10 @@
     titleBlock.appendChild(eyebrow);
 
     const title = createElement('h3');
-    title.textContent = safeString(bean?.title || '원두 기록');
+    title.textContent = safeString(bean?.name || '원두 기록');
     titleBlock.appendChild(title);
 
-    const firstLog = logs[0] || {};
-    const goals = asArray(firstLog?.goals);
+    const goals = asArray(bean?.goals);
     if (goals.length) {
       const goalsRow = createElement('div', 'espresso-goals');
       goals.forEach((goal) => goalsRow.appendChild(pill(goal)));
@@ -278,19 +318,19 @@
     stats.appendChild(statBlock('라운드', `${rounds.length}회`));
     if (rounds.length) {
       const latest = rounds[rounds.length - 1];
-      stats.appendChild(statBlock('최근 추출', safeString(latest?.recipe?.extractionTime || latest?.result?.extractionTime || '-')));
+      stats.appendChild(statBlock('최근 추출', formatValue(latest?.recipe?.extractionTime || latest?.result?.extractionTime || '-')));
     }
     header.appendChild(stats);
 
     return header;
   }
 
-  function createLogCard(log) {
+  function createLogCard(log, bean) {
     const card = createElement('section', 'log-section espresso-log');
     const header = createElement('div', 'espresso-log-header');
 
     const heading = createElement('h4');
-    heading.textContent = safeString(log?.name || log?.type || '추출 기록');
+    heading.textContent = safeString(log?.title || log?.type || '추출 기록');
     header.appendChild(heading);
 
     const logType = log?.type ? pill(log.type) : null;
@@ -301,7 +341,7 @@
     }
     card.appendChild(header);
 
-    const equipment = objectToPairs(log?.equipment);
+    const equipment = objectToPairs(log?.equipment || bean?.defaultEquipment);
     if (equipment.length) {
       card.appendChild(specGrid('장비', equipment));
     }
@@ -334,7 +374,7 @@
     const header = createElement('div', 'round-header');
 
     const title = createElement('h5');
-    title.textContent = `라운드 ${safeString(round?.round || '-')}`;
+    title.textContent = `라운드 ${safeString(round?.roundNumber || '-')}`;
     header.appendChild(title);
 
     const badge = createElement('div', 'round-badge');
@@ -347,13 +387,13 @@
       card.appendChild(specGrid('추출 조건', recipe));
     }
     appendObjectSection(card, '결과', round?.result);
-    appendArraySection(card, '판단', round?.judgment);
-    appendArraySection(card, '다음 액션', round?.nextAction);
-    appendArraySection(card, '변경 사항', round?.changes);
-    appendArraySection(card, '메모', round?.notes);
-    appendArraySection(card, '비교 메모', round?.plannedComparison);
-    appendArraySection(card, '결론', round?.conclusion);
-    appendArraySection(card, '추론', round?.inference);
+    appendArraySection(card, '변경 사항', round?.analysis?.changes);
+    appendArraySection(card, '메모', round?.analysis?.notes);
+    appendArraySection(card, '비교 메모', round?.analysis?.plannedComparisons);
+    appendArraySection(card, '판단', round?.analysis?.judgments);
+    appendArraySection(card, '추론', round?.analysis?.inferences);
+    appendArraySection(card, '결론', round?.analysis?.conclusions);
+    appendArraySection(card, '다음 액션', round?.nextActions);
 
     return card;
   }
@@ -521,6 +561,9 @@
     if (value == null) {
       return '';
     }
+    if (isMeasurement(value)) {
+      return formatMeasurement(value);
+    }
     if (Array.isArray(value)) {
       return value.map((item) => formatValue(item)).join('\n');
     }
@@ -530,6 +573,41 @@
         .join('\n');
     }
     return safeString(value);
+  }
+
+  function isMeasurement(value) {
+    return Boolean(
+      value &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        typeof value.unit === 'string' &&
+        (typeof value.value === 'number' || typeof value.min === 'number' || typeof value.max === 'number')
+    );
+  }
+
+  function formatMeasurement(measurement) {
+    const unit = unitLabel(measurement.unit);
+    if (typeof measurement.value === 'number') {
+      return `${formatNumber(measurement.value)}${unit}`;
+    }
+
+    const min = typeof measurement.min === 'number' ? formatNumber(measurement.min) : '';
+    const max = typeof measurement.max === 'number' ? formatNumber(measurement.max) : '';
+    return `${min}${min && max ? '~' : ''}${max}${unit}`;
+  }
+
+  function formatNumber(value) {
+    return Number.isInteger(value) ? String(value) : String(value).replace(/0+$/, '').replace(/\.$/, '');
+  }
+
+  function unitLabel(unit) {
+    const unitMap = {
+      bar: 'bar',
+      celsius: '도',
+      g: 'g',
+      sec: '초'
+    };
+    return unitMap[unit] || safeString(unit);
   }
 
   function recipeMatches(value, query) {
@@ -573,8 +651,10 @@
       changes: '변경 사항',
       conditions: '상태',
       conclusion: '결론',
+      conclusions: '결론',
       currentAnalysis: '현재 분석',
       date: '날짜',
+      defaultEquipment: '기본 장비',
       dose: '도징',
       expectedResult: '예상 결과',
       extractionTime: '추출 시간',
@@ -582,22 +662,30 @@
       grind: '분쇄도',
       goals: '목표',
       inference: '추론',
+      inferences: '추론',
       judgment: '판단',
+      judgments: '판단',
       machine: '머신',
       method: '방법',
       nextAction: '다음 액션',
+      nextActions: '다음 액션',
       nextDirection: '다음 방향',
       nextTest: '다음 테스트',
       notes: '메모',
       plannedComparison: '비교 메모',
+      plannedComparisons: '비교 메모',
       preinfusion: '프리인퓨전',
       pressure: '압력',
       result: '결과',
       round: '라운드',
+      roundNumber: '라운드',
       recipe: '레시피',
+      roaster: '로스터',
       suspectedIssues: '의심 문제',
       tamper: '탬퍼',
       taste: '맛',
+      targetExtractionTime: '목표 추출 시간',
+      targetRoundNumber: '목표 라운드',
       temperature: '온도',
       time: '시간',
       steps: '단계',
