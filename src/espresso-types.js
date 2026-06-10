@@ -1,4 +1,27 @@
 /**
+ * 원문 입력 그대로 보존하는 파일 구조.
+ * 이 데이터는 사용자가 입력한 문장, 메모, 비정형 필드를 잃지 않기 위한 원천 기록이다.
+ *
+ * @typedef {Object} EspressoRawDataFile
+ * @property {1} schemaVersion
+ * @property {EspressoRawEntry[]} entries
+ */
+
+/**
+ * @typedef {Object} EspressoRawEntry
+ * @property {string} id
+ * @property {string} beanName
+ * @property {"manual" | "import"} source
+ * @property {string} capturedAt
+ * @property {string} text
+ * @property {string} [normalizedBeanId]
+ * @property {string} [normalizedLogId]
+ * @property {string} [normalizedRoundId]
+ */
+
+/**
+ * 화면 렌더링, 검색, 향후 입력 폼 저장에 사용하는 정규화 파일 구조.
+ *
  * @typedef {"g" | "sec" | "celsius" | "bar"} EspressoUnit
  */
 

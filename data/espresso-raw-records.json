@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "id": "raw-fritz-jal-doeeo-gasina-initial-log",
+      "beanName": "프릳츠 잘 되어 가시나",
+      "source": "manual",
+      "capturedAt": "2026-06-10",
+      "text": "홈카페 에스프레소 추출 로그. 장비는 CRM 3605 PWM 2버전, IMS 20g 바스켓, 정압 템퍼. 목표는 단맛, 밸런스, 긴 달콤한 후미, 깔끔한 에스프레소. 1라운드: 도징 19.5g, 추출량 35g, 온도 91도, 프리인퓨전 4초, 추출시간 14~15초. 산미 강함, 비교적 깔끔함. 전형적인 저추출, 단맛과 바디 부족, 추출시간 부족. 다음 액션은 분쇄도 가늘게 조정. 2라운드: 분쇄도를 상당히 가늘게 조정. 압력 9bar, 추출시간 18초. 산미가 더 강해지고 불쾌한 산미와 안 좋은 맛 증가. 그라인더가 힘들어하고 분쇄도가 상당히 가는 상태. 단순히 분쇄도가 굵어서 빠른 상황이 아니라 채널링, 퍽 붕괴, 불균일 추출 가능성. 더 가늘게 조정하지 않고 살짝 굵게 되돌릴 필요 있음. 3라운드: 2026-06-10, 도징 20g, 추출량 38g, 온도 88도, 유량 최대에서 2칸 내림, 추출시간 19초. 찌르는 산미가 줄었다.",
+      "normalizedBeanId": "bean-fritz-jal-doeeo-gasina",
+      "normalizedLogId": "log-home-espresso-001"
+    },
+    {
+      "id": "raw-fritz-jal-doeeo-gasina-round-004",
+      "beanName": "프릳츠 잘 되어 가시나",
+      "source": "manual",
+      "capturedAt": "2026-06-11",
+      "text": "오늘 에스프레소 히스토리 추가. 분쇄도 2.4. 유량 맥스 기준 4칸 아래. 추출시간 20초. 나머진 전 기록과 동일. 찌르는 산미가 약간 줄었으나 아직 산미가 가장 도드러짐. 산미를 더 줄이고 싶음.",
+      "normalizedBeanId": "bean-fritz-jal-doeeo-gasina",
+      "normalizedLogId": "log-home-espresso-001",
+      "normalizedRoundId": "round-004"
+    }
+  ]
+}

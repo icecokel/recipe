@@ -22,7 +22,7 @@
     try {
       const [recipes, espresso] = await Promise.all([
         fetchJson('./data/recipes.json'),
-        fetchJson('./data/espresso-recipes.json')
+        fetchJson('./data/espresso-normalized-recipes.json')
       ]);
 
       state.recipes = Array.isArray(recipes) ? recipes : [];
@@ -81,7 +81,7 @@
   }
 
   async function fetchJson(path) {
-    const response = await fetch(path);
+    const response = await fetch(path, { cache: 'no-store' });
     if (!response.ok) {
       throw new Error(`데이터를 불러오지 못했습니다: ${path} (${response.status})`);
     }

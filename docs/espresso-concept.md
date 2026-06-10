@@ -66,8 +66,9 @@
 ## 현재 기준
 
 - 데이터는 일반 레시피와 분리한다.
-- 파일은 `data/espresso-recipes.json`을 사용한다.
-- 데이터 파일은 `schemaVersion`과 `beans` 배열을 갖는 정규화 구조를 사용한다.
+- 원문 입력은 `data/espresso-raw-records.json`에 보관한다.
+- 화면과 입력 폼에서 사용할 정규화 데이터는 `data/espresso-normalized-recipes.json`을 사용한다.
+- 정규화 데이터 파일은 `schemaVersion`과 `beans` 배열을 갖는 구조를 사용한다.
 - 각 원두는 `id`, `name`, `goals`, `defaultEquipment`, `logs`를 갖는다.
 - 각 로그는 `rounds`, `currentAnalysis`, `adjustmentGuide`, `nextTest`, `nextDirection`을 갖는다.
 - 각 라운드는 `id`, `roundNumber`, `date`, `recipe`, `result`, `analysis`, `nextActions`를 갖는다.
