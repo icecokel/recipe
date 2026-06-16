@@ -19,6 +19,53 @@
       "normalizedBeanId": "bean-fritz-jal-doeeo-gasina",
       "normalizedLogId": "log-home-espresso-001",
       "normalizedRoundId": "round-004"
+    },
+    {
+      "id": "raw-fritz-jal-doeeo-gasina-round-005",
+      "beanName": "프릳츠 잘 되어 가시나",
+      "source": "manual",
+      "capturedAt": "2026-06-12",
+      "text": "오늘 에스프레소 기록. 어제와 동일. 유량은 최저로 내림. 불쾌한 맛이 많이 났음.",
+      "normalizedBeanId": "bean-fritz-jal-doeeo-gasina",
+      "normalizedLogId": "log-home-espresso-001",
+      "normalizedRoundId": "round-005"
+    },
+    {
+      "id": "raw-momos-es-chocolat-product-info",
+      "beanName": "원두 에스쇼콜라",
+      "source": "import",
+      "capturedAt": "2026-06-17",
+      "text": "모모스커피 상품 페이지에서 원두 에스쇼콜라 정보 수집. 판매가 15,000원. 노트는 다크초콜릿을 한입 베어먹은 듯한 묵직함, 깔끔한 단맛, 크림 같은 부드러운 질감. 식품유형 커피. 제조원 및 판매원은 모모스커피 / 부산광역시 영도구 봉래나루로 160. 제조일자는 주말 또는 도서산간지역 배송일 포함 주문일로부터 1일에서 최대 4일 전 가공 상품. 소비기한은 제조일로부터 1년. 내용량은 200g / 500g / 1kg. 원재료명 및 함량은 커피원두 100%. 배송비 2,500원, 40,000원 이상 구매 시 무료. 분쇄 옵션은 홀빈, 핸드드립용, 커피메이커용, 가정용더치용, 모카포트용, 에스프레소머신용.",
+      "normalizedBeanId": "bean-momos-es-chocolat"
+    },
+    {
+      "id": "raw-momos-es-chocolat-initial-test-plan",
+      "beanName": "원두 에스쇼콜라",
+      "source": "manual",
+      "capturedAt": "2026-06-17",
+      "text": "모모스 에스쇼콜라 에스프레소 첫 테스트 세팅. 장비는 기존 홈 장비인 CRM 3605 PWM 2버전, IMS 20g 바스켓, 정압 템퍼 기준. 목표는 다크초콜릿 단맛, 깔끔한 단맛, 크리미한 질감, 묵직한 바디. 첫 기준샷은 도징 20g, 추출량 36g, 온도 88도, 프리인퓨전 5~6초, 유량 최대에서 4칸 내림, 목표 추출시간 28~34초. 최저 유량은 이전 히스토리에서 불쾌한 맛을 키웠으므로 제외. 첫 샷에서는 단맛, 초콜릿감, 질감, 텁텁함, 채널링 여부를 우선 기록.",
+      "normalizedBeanId": "bean-momos-es-chocolat",
+      "normalizedLogId": "log-momos-es-chocolat-espresso-001"
+    },
+    {
+      "id": "raw-momos-es-chocolat-round-001",
+      "beanName": "원두 에스쇼콜라",
+      "source": "manual",
+      "capturedAt": "2026-06-17",
+      "text": "오늘 예외로 바스켓 기본으로 진행. 원두 19g, 추출 시간 25초, 프리인퓨징 기본, 분쇄도 2, 온도 93도. 비정형적 데이터. 모모스 커피 에스쇼콜라 1라운드. 밸런스가 좋고 쓴맛이 살짝 있음.",
+      "normalizedBeanId": "bean-momos-es-chocolat",
+      "normalizedLogId": "log-momos-es-chocolat-espresso-001",
+      "normalizedRoundId": "round-001"
+    },
+    {
+      "id": "raw-momos-es-chocolat-round-001-texture-note",
+      "beanName": "원두 에스쇼콜라",
+      "source": "manual",
+      "capturedAt": "2026-06-17",
+      "text": "모모스 커피 에스쇼콜라 1라운드 추가 메모. 살짝 텁텁이 존재함.",
+      "normalizedBeanId": "bean-momos-es-chocolat",
+      "normalizedLogId": "log-momos-es-chocolat-espresso-001",
+      "normalizedRoundId": "round-001"
     }
   ]
 }
