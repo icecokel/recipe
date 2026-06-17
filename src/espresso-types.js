@@ -42,6 +42,23 @@
  */
 
 /**
+ * @typedef {Object} EspressoProductInfo
+ * @property {string} [sourceUrl]
+ * @property {string} [capturedAt]
+ * @property {number} [priceKRW]
+ * @property {string[]} [notes]
+ * @property {string} [foodType]
+ * @property {string} [manufacturer]
+ * @property {string} [manufacturedAtDescription]
+ * @property {string} [shelfLife]
+ * @property {string[]} [sizes]
+ * @property {string} [ingredients]
+ * @property {number} [shippingFeeKRW]
+ * @property {number} [freeShippingThresholdKRW]
+ * @property {string[]} [grindOptions]
+ */
+
+/**
  * @typedef {Object} EspressoRecipeParameters
  * @property {EspressoMeasurement} [dose]
  * @property {EspressoMeasurement} [yield]
@@ -128,6 +145,7 @@
  * @property {string} id
  * @property {string} name
  * @property {string} [roaster]
+ * @property {EspressoProductInfo} [productInfo]
  * @property {string[]} goals
  * @property {EspressoEquipment} defaultEquipment
  * @property {EspressoLog[]} logs

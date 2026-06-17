@@ -10,18 +10,23 @@
 
 ## 저장 위치
 
-- 원문 기록: `/Users/smlee/recipe/data/espresso-raw-records.json`
-- 정규화 기록: `/Users/smlee/recipe/data/espresso-normalized-recipes.json`
+- 원천 DB: `/Users/smlee/vscoke-api`가 접속하는 PostgreSQL DB의 `espresso_beans`, `espresso_raw_entries` 테이블
+- API 서버: `/Users/smlee/vscoke-api`
+- API 엔드포인트: `GET /espresso`, `GET /espresso/raw`, `POST /espresso/raw`
+- DB seed 스크립트: `/Users/smlee/vscoke-api/scripts/seed-espresso-data.js`
+- seed/export용 원문 JSON: `/Users/smlee/recipe/data/espresso-raw-records.json`
+- seed/export용 정규화 JSON: `/Users/smlee/recipe/data/espresso-normalized-recipes.json`
 - 타입 기준: `/Users/smlee/recipe/src/espresso-types.js`
 - 기본 개념: `/Users/smlee/recipe/docs/espresso-concept.md`
 
 ## 기록 원칙
 
-- 사용자의 원문 표현은 비정형이어도 raw entry에 최대한 그대로 보존한다.
-- 정규화 가능한 값은 해당 원두의 `logs[].rounds[]`에 반영한다.
+- 사용자의 원문 표현은 비정형이어도 DB의 raw entry에 최대한 그대로 보존한다.
+- 정규화 가능한 값은 DB의 해당 원두 payload `logs[].rounds[]`에 반영한다.
+- JSON 파일은 DB 초기 seed, export, API 실패 시 화면 폴백 기준으로 사용한다.
 - 빠진 값은 추정하지 않는다. 추출량, 바스켓, 프리인퓨전 시간처럼 비어 있는 값은 “기록되지 않음” 또는 사용자의 표현 그대로 남긴다.
 - “살짝”, “텁텁”, “밸런스 좋음” 같은 감각 표현은 삭제하거나 과도하게 해석하지 않는다.
-- JSON 수정 후에는 `jq empty`로 raw/normalized 파일 파싱을 확인한다.
+- DB 변경 후에는 `/Users/smlee/vscoke-api`에서 `npm run db:seed:espresso` 또는 직접 API 저장을 수행하고, `/espresso`와 `/espresso/raw` 응답을 확인한다. JSON seed/export를 수정했다면 `jq empty`도 함께 확인한다.
 
 ## 장비 맥락
 
@@ -37,4 +42,4 @@
 
 ## 보고 방식
 
-기록 후 사용자에게 어떤 raw entry와 어떤 normalized round가 업데이트됐는지 말한다. 답변에는 장비, 원두, 라운드, 핵심 추출값, 맛 변화, 다음 기록 포인트를 간단히 포함한다.
+기록 후 사용자에게 어떤 raw entry와 어떤 normalized round 또는 DB row가 업데이트됐는지 말한다. 답변에는 장비, 원두, 라운드, 핵심 추출값, 맛 변화, 다음 기록 포인트를 간단히 포함한다.

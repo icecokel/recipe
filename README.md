@@ -30,3 +30,8 @@ recipes/
 ```
 
 필요에 따라 카테고리는 자유롭게 추가하거나 변경합니다.
+
+## 에스프레소 데이터
+
+에스프레소 기록의 원천 데이터는 `vscoke-api`의 PostgreSQL DB와 `/espresso` API를 사용합니다.
+이 저장소의 JSON 파일은 seed/export 및 API 실패 시 화면 폴백 용도로 유지합니다.

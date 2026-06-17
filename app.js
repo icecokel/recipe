@@ -11,6 +11,7 @@
   };
 
   const elements = {};
+  const ESPRESSO_API_BASE_URL = window.ESPRESSO_API_BASE_URL || 'https://api.icecoke.kr';
 
   document.addEventListener('DOMContentLoaded', init);
 
@@ -22,7 +23,7 @@
     try {
       const [recipes, espresso] = await Promise.all([
         fetchJson('./data/recipes.json'),
-        fetchJson('./data/espresso-normalized-recipes.json')
+        fetchJsonWithFallback(`${ESPRESSO_API_BASE_URL}/espresso`, './data/espresso-normalized-recipes.json')
       ]);
 
       state.recipes = Array.isArray(recipes) ? recipes : [];
@@ -85,7 +86,16 @@
     if (!response.ok) {
       throw new Error(`데이터를 불러오지 못했습니다: ${path} (${response.status})`);
     }
-    return response.json();
+    const json = await response.json();
+    return json?.success === true && Object.hasOwn(json, 'data') ? json.data : json;
+  }
+
+  async function fetchJsonWithFallback(primaryPath, fallbackPath) {
+    try {
+      return await fetchJson(primaryPath);
+    } catch (error) {
+      return fetchJson(fallbackPath);
+    }
   }
 
   function normalizeEspressoData(data) {
@@ -278,6 +288,7 @@
 
     const logs = asArray(bean?.logs);
     article.appendChild(createBeanHeader(bean, logs));
+    appendObjectSection(article, '원두 정보', bean?.productInfo);
 
     if (logs.length === 0) {
       article.appendChild(messageBlock('등록된 로그가 없습니다.'));
@@ -648,6 +659,7 @@
       action: '조치',
       adjustments: '조정',
       basket: '바스켓',
+      capturedAt: '수집일',
       changes: '변경 사항',
       conditions: '상태',
       conclusion: '결론',
@@ -659,13 +671,19 @@
       expectedResult: '예상 결과',
       extractionTime: '추출 시간',
       flow: '유량',
+      foodType: '식품 유형',
+      freeShippingThresholdKRW: '무료 배송 기준',
       grind: '분쇄도',
+      grindOptions: '분쇄 옵션',
       goals: '목표',
+      ingredients: '원재료',
       inference: '추론',
       inferences: '추론',
       judgment: '판단',
       judgments: '판단',
       machine: '머신',
+      manufacturedAtDescription: '제조일자 안내',
+      manufacturer: '제조/판매원',
       method: '방법',
       nextAction: '다음 액션',
       nextActions: '다음 액션',
@@ -676,11 +694,17 @@
       plannedComparisons: '비교 메모',
       preinfusion: '프리인퓨전',
       pressure: '압력',
+      priceKRW: '판매가',
+      productInfo: '원두 정보',
       result: '결과',
       round: '라운드',
       roundNumber: '라운드',
       recipe: '레시피',
       roaster: '로스터',
+      shelfLife: '소비기한',
+      shippingFeeKRW: '배송비',
+      sizes: '내용량',
+      sourceUrl: '출처',
       suspectedIssues: '의심 문제',
       tamper: '탬퍼',
       taste: '맛',
